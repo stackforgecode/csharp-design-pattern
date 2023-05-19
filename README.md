@@ -8,6 +8,7 @@ Aqui está um exemplo de implementação do padrão Unity of Work em C#:
 
 ```csharp
 // Classe de Entidade
+// /Models/Product.cs
 public class Product
 {
     public int Id { get; set; }
@@ -15,7 +16,7 @@ public class Product
     public decimal Price { get; set; }
 }
 
-// Interface do Repositório
+// /Repositories/Interfaces/IRepository.cs
 public interface IRepository<T>
 {
     void Add(T entity);
@@ -24,7 +25,7 @@ public interface IRepository<T>
     IEnumerable<T> GetAll();
 }
 
-// Implementação do Repositório
+// /Repositories/Implementations/ProductRepository.cs
 public class ProductRepository : IRepository<Product>
 {
     private DbContext context;
@@ -55,7 +56,7 @@ public class ProductRepository : IRepository<Product>
     }
 }
 
-// Classe Unity of Work
+// /UnitOfWork/UnitOfWork.cs
 public class UnitOfWork : IDisposable
 {
     private DbContext context;
@@ -89,6 +90,12 @@ public class UnitOfWork : IDisposable
     }
 }
 
+// /Database/AppDbContext.cs
+public class AppDbContext : DbContext
+{
+    // Configurações do DbContext
+}
+
 // Exemplo de Uso
 using (var unitOfWork = new UnitOfWork())
 {
@@ -102,6 +109,7 @@ using (var unitOfWork = new UnitOfWork())
 
     unitOfWork.Save(); // Salva as alterações no banco de dados
 }
+
 ```
 
 Neste exemplo, temos a classe Product como uma entidade de exemplo. O ProductRepository implementa a interface IRepository<Product> e é responsável por interagir com o banco de dados para operações relacionadas aos produtos.
